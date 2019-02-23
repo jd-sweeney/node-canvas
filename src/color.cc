@@ -13,6 +13,8 @@
 #include "color.h"
 #include <map>
 
+#include <iostream>
+
 // Compatibility with Visual Studio versions prior to VS2015
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
@@ -242,6 +244,14 @@ parse_clipped_percentage(const char** pStr, float *pFraction) {
       } \
     } \
     do {} while (0) // require trailing semicolon
+
+#define CYAN(NAME) HUE(NAME)
+
+#define MAGENTA(NAME) HUE(NAME)
+
+#define YELLOW(NAME) HUE(NAME)
+
+#define BLACK(NAME) HUE(NAME)
 
 /*
  * Named colors.
@@ -549,6 +559,22 @@ rgba_from_rgb(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 /*
+ * Return rgba from (c,m,y,k).
+ * Adapted from https://drafts.csswg.org/css-color-4/#cmyk-rgb
+ */
+
+static inline int32_t
+rgba_from_cmyk(float c, float m, float y, float k) {
+  uint8_t r, g, b;
+
+  r = (uint8_t)(255 * (1 - c) * (1 - k));
+  g = (uint8_t)(255 * (1 - m) * (1 - k));
+  b = (uint8_t)(255 * (1 - y) * (1 - k));
+
+  return rgba_from_rgba(r, g, b, 255);
+}
+
+/*
  * Return rgba from #RRGGBBAA
  */
 
@@ -734,6 +760,32 @@ rgba_from_name_string(const char *str, short *ok) {
 }
 
 /*
+ * Return rgb from "cmyk()"
+ */
+
+static int32_t
+rgba_from_cmyk_string(const char *str, short *ok) {
+  if (str == strstr(str, "cmyk(")) {
+    str += 5;
+    WHITESPACE;
+    float cyan = 0;
+    float magenta = 0;
+    float yellow = 0;
+    float black = 0;
+    HUE(cyan);
+    WHITESPACE_OR_COMMA;
+    HUE(magenta);
+    WHITESPACE_OR_COMMA;
+    HUE(yellow);
+    WHITESPACE_OR_COMMA;
+    HUE(black);
+    WHITESPACE;
+    return *ok = 1, rgba_from_cmyk(cyan, magenta, yellow, black);
+  }
+  return *ok = 0;
+}
+
+/*
  * Return rgb from:
  *
  *  - #RGB
@@ -744,6 +796,7 @@ rgba_from_name_string(const char *str, short *ok) {
  *  - rgba(r,g,b,a)
  *  - hsl(h,s,l)
  *  - hsla(h,s,l,a)
+ *  - cmyk(c,m,y,k)
  *  - name
  *
  */
@@ -760,6 +813,8 @@ rgba_from_string(const char *str, short *ok) {
     return rgba_from_hsla_string(str, ok);
   if (str == strstr(str, "hsl"))
     return rgba_from_hsl_string(str, ok);
+  if (str == strstr(str, "cmyk"))
+    return rgba_from_cmyk_string(str, ok);
   return rgba_from_name_string(str, ok);
 }
 

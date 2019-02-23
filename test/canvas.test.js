@@ -120,6 +120,15 @@ describe('Canvas', function () {
       ctx[prop] = 'rgba(128,80,0,0.75)';
       assert.equal('rgba(128, 80, 0, 0.75)', ctx[prop], prop + ' rgba(128,80,0,0.75) -> rgba(128, 80, 0, 0.75), got ' + ctx[prop]);
 
+      ctx[prop] = 'cmyk(0,0,0,0)';
+      assert.equal('#ffffff', ctx[prop], prop + ' cmyk(0,0,0,0) -> #ffffff, got ' + ctx[prop]);
+
+      ctx[prop] = 'cmyk(0.47, 1, 0.44, 0.39)';
+      assert.equal('#520057', ctx[prop], prop + ' cmyk(0.47, 1, 0.44, 0.39) -> #520057, got ' + ctx[prop]);
+
+      ctx[prop] = 'cmyk(1,1,1,1)';
+      assert.equal('#000000', ctx[prop], prop + ' cmyk(1,1,1,1) -> #000000, got ' + ctx[prop]);
+
       if ('shadowColor' == prop) return;
 
       var grad = ctx.createLinearGradient(0,0,0,150);
@@ -238,6 +247,20 @@ describe('Canvas', function () {
 
     ctx.fillStyle = 'hsl(1.24e2, 760e-1%, 4.7e1%)';
     assert.equal('#1dd329', ctx.fillStyle);
+
+    // cmyk tests
+
+    ctx.fillStyle = 'cmyk(0, 0, 0, 0)';
+    assert.equal('#ffffff', ctx.fillStyle);
+
+    ctx.fillStyle = 'cmyk( 0  ,   0  ,  0, 0)';
+    assert.equal('#ffffff', ctx.fillStyle);
+
+    ctx.fillStyle = 'cmyk( 0.47,    1, 0.44,      0.39)';
+    assert.equal('#520057', ctx.fillStyle);
+
+    ctx.fillStyle = 'cmyk(1, 1, 1, 1)';
+    assert.equal('#000000', ctx.fillStyle);
 
     // case-insensitive (#235)
     ctx.fillStyle = "sILveR";
