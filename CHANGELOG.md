@@ -10,6 +10,33 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Added
 ### Fixed
+* PDF metadata (added in 2.3.0) wasn't being set with `canvas.createPDFStream()`
+* Fix custom "inspect" function deprecation warnings (#1326)
+
+2.3.1
+==================
+### Fixed
+* Fix `canvas.toBuffer()` for JPEGs (#1350)
+
+2.3.0
+==================
+### Added
+* Add support for multiple PDF page sizes
+* Add support for embedding document metadata in PDFs
+
+### Fixed
+* Don't crash when font string is invalid (bug since 2.2.0) (#1328)
+* Fix memory leak in `canvas.toBuffer()` (#1202, #1296)
+* Fix memory leak in `ctx.font=` (#1202)
+
+2.2.0
+==================
+### Added
+* BMP support
+
+### Fixed
+* Reset context on resurface (#1292)
+* Support Jest test framework (#1311)
 
 2.1.0
 ==================
