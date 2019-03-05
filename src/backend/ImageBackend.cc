@@ -2,12 +2,24 @@
 
 using namespace v8;
 
-ImageBackend::ImageBackend(int width, int height)
+ImageBackend::ImageBackend(double width, double height)
 	: Backend("image", width, height)
 	{}
 
-Backend *ImageBackend::construct(int width, int height){
+Backend *ImageBackend::construct(double width, double height){
   return new ImageBackend(width, height);
+}
+
+void ImageBackend::setWidth(double width_)
+{
+  this->width = static_cast<int>(width_);
+  this->recreateSurface();
+}
+
+void ImageBackend::setHeight(double height_)
+{
+  this->height = static_cast<int>(height_);
+  this->recreateSurface();
 }
 
 // This returns an approximate value only, suitable for Nan::AdjustExternalMemory.

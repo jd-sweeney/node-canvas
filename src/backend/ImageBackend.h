@@ -11,8 +11,11 @@ class ImageBackend : public Backend
     cairo_format_t format = DEFAULT_FORMAT;
 
   public:
-    ImageBackend(int width, int height);
-    static Backend *construct(int width, int height);
+    ImageBackend(double width, double height);
+    static Backend *construct(double width, double height);
+
+    virtual void setWidth(double width);
+    virtual void setHeight(double height);
 
     cairo_format_t getFormat();
     void setFormat(cairo_format_t format);

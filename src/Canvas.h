@@ -65,8 +65,8 @@ class Canvas: public Nan::ObjectWrap {
     DLL_PUBLIC inline int stride(){ return cairo_image_surface_get_stride(surface()); }
     DLL_PUBLIC inline int nBytes(){ return getHeight() * stride(); }
 
-    DLL_PUBLIC inline int getWidth() { return backend()->getWidth(); }
-    DLL_PUBLIC inline int getHeight() { return backend()->getHeight(); }
+    DLL_PUBLIC inline double getWidth() { return backend()->getWidth(); }
+    DLL_PUBLIC inline double getHeight() { return backend()->getHeight(); }
 
     Canvas(Backend* backend);
     void resurface(v8::Local<v8::Object> canvas);

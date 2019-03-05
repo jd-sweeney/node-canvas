@@ -14,9 +14,9 @@ class PdfBackend : public Backend
     PdfSvgClosure* _closure = NULL;
     inline PdfSvgClosure* closure() { return _closure; }
 
-    PdfBackend(int width, int height);
+    PdfBackend(double width, double height);
     ~PdfBackend();
-    static Backend *construct(int width, int height);
+    static Backend *construct(double width, double height);
 
     static Nan::Persistent<v8::FunctionTemplate> constructor;
     static void Initialize(v8::Handle<v8::Object> target);

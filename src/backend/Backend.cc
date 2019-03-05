@@ -1,7 +1,7 @@
 #include "Backend.h"
 #include <string>
 
-Backend::Backend(std::string name, int width, int height)
+Backend::Backend(std::string name, double width, double height)
   : name(name)
   , width(width)
   , height(height)
@@ -13,10 +13,10 @@ Backend::~Backend()
 }
 
 void Backend::init(const Nan::FunctionCallbackInfo<v8::Value> &info) {
-  int width  = 0;
-  int height = 0;
-  if (info[0]->IsNumber()) width  = Nan::To<uint32_t>(info[0]).FromMaybe(0);
-  if (info[1]->IsNumber()) height = Nan::To<uint32_t>(info[1]).FromMaybe(0);
+  double width  = 0;
+  double height = 0;
+  if (info[0]->IsNumber()) width  = Nan::To<double>(info[0]).FromMaybe(0);
+  if (info[1]->IsNumber()) height = Nan::To<double>(info[1]).FromMaybe(0);
 
   Backend *backend = construct(width, height);
 
@@ -57,21 +57,21 @@ std::string Backend::getName()
   return name;
 }
 
-int Backend::getWidth()
+double Backend::getWidth()
 {
   return this->width;
 }
-void Backend::setWidth(int width_)
+void Backend::setWidth(double width_)
 {
   this->width = width_;
   this->recreateSurface();
 }
 
-int Backend::getHeight()
+double Backend::getHeight()
 {
   return this->height;
 }
-void Backend::setHeight(int height_)
+void Backend::setHeight(double height_)
 {
   this->height = height_;
   this->recreateSurface();

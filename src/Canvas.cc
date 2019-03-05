@@ -93,9 +93,9 @@ NAN_METHOD(Canvas::New) {
 
   Backend* backend = NULL;
   if (info[0]->IsNumber()) {
-    int width = Nan::To<uint32_t>(info[0]).FromMaybe(0), height = 0;
+    double width = Nan::To<double>(info[0]).FromMaybe(0), height = 0;
 
-    if (info[1]->IsNumber()) height = Nan::To<uint32_t>(info[1]).FromMaybe(0);
+    if (info[1]->IsNumber()) height = Nan::To<double>(info[1]).FromMaybe(0);
 
     if (info[2]->IsString()) {
       if (0 == strcmp("pdf", *Nan::Utf8String(info[2])))
@@ -167,7 +167,7 @@ NAN_GETTER(Canvas::GetWidth) {
 NAN_SETTER(Canvas::SetWidth) {
   if (value->IsNumber()) {
     Canvas *canvas = Nan::ObjectWrap::Unwrap<Canvas>(info.This());
-    canvas->backend()->setWidth(Nan::To<uint32_t>(value).FromMaybe(0));
+    canvas->backend()->setWidth(Nan::To<double>(value).FromMaybe(0));
     canvas->resurface(info.This());
   }
 }
@@ -188,7 +188,7 @@ NAN_GETTER(Canvas::GetHeight) {
 NAN_SETTER(Canvas::SetHeight) {
   if (value->IsNumber()) {
     Canvas *canvas = Nan::ObjectWrap::Unwrap<Canvas>(info.This());
-    canvas->backend()->setHeight(Nan::To<uint32_t>(value).FromMaybe(0));
+    canvas->backend()->setHeight(Nan::To<double>(value).FromMaybe(0));
     canvas->resurface(info.This());
   }
 }
@@ -311,7 +311,7 @@ static void parseJPEGArgs(Local<Value> arg, JpegClosure& jpegargs) {
 static uint32_t getSafeBufSize(Canvas* canvas) {
   // Don't allow the buffer size to exceed the size of the canvas (#674)
   // TODO not sure if this is really correct, but it fixed #674
-  return (std::min)(canvas->getWidth() * canvas->getHeight() * 4, static_cast<int>(PAGE_SIZE));
+  return static_cast<uint32_t>(std::min<double>(canvas->getWidth() * canvas->getHeight() * 4, PAGE_SIZE));
 }
 
 #if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1, 16, 0)

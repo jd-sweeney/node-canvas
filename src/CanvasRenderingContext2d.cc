@@ -754,8 +754,8 @@ NAN_METHOD(Context2d::AddPage) {
     return Nan::ThrowError("only PDF canvases support .nextPage()");
   }
   cairo_show_page(context->context());
-  int width = Nan::To<int32_t>(info[0]).FromMaybe(0);
-  int height = Nan::To<int32_t>(info[1]).FromMaybe(0);
+  double width = Nan::To<int32_t>(info[0]).FromMaybe(0);
+  double height = Nan::To<int32_t>(info[1]).FromMaybe(0);
   if (width < 1) width = context->canvas()->getWidth();
   if (height < 1) height = context->canvas()->getHeight();
   cairo_pdf_surface_set_size(context->canvas()->surface(), width, height);
@@ -831,8 +831,8 @@ NAN_METHOD(Context2d::PutImageData) {
   // clamp width at canvas size
   // Need to wrap std::min calls using parens to prevent macro expansion on
   // windows. See http://stackoverflow.com/questions/5004858/stdmin-gives-error
-  cols = (std::min)(sw, context->canvas()->getWidth() - dx);
-  rows = (std::min)(sh, context->canvas()->getHeight() - dy);
+  cols = std::min<double>(sw, context->canvas()->getWidth() - dx);
+  rows = std::min<double>(sh, context->canvas()->getHeight() - dy);
 
   if (cols <= 0 || rows <= 0) return;
 
@@ -972,8 +972,8 @@ NAN_METHOD(Context2d::GetImageData) {
   if (!sh)
     return Nan::ThrowError("IndexSizeError: The source height is 0.");
 
-  int width = canvas->getWidth();
-  int height = canvas->getHeight();
+  double width = canvas->getWidth();
+  double height = canvas->getHeight();
 
   if (!width)
     return Nan::ThrowTypeError("Canvas width is 0");
