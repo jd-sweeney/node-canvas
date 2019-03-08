@@ -257,6 +257,26 @@ describe('Canvas', function () {
     assert.equal(canvas.type, 'image');
   });
 
+  it ('Canvas#doubleSurface', function() {
+    var canvasW = 10;
+    var canvasH = 10;
+
+    var precisionW = 0.457;
+    var precisionH = 0.836;
+
+    var canvas = createCanvas(canvasW + precisionW, canvasH + precisionH);
+    assert.equal((canvas.width - canvasW).toFixed(3), precisionW, 'image canvas.width matches');
+    assert.equal((canvas.height - canvasH).toFixed(3), precisionH, 'image canvas.height matches');
+
+    var canvas = createCanvas(canvasW + precisionW, canvasH + precisionH);
+    assert.equal((canvas.width - canvasW).toFixed(3), precisionW, 'pdf canvas.width matches');
+    assert.equal((canvas.height - canvasH).toFixed(3), precisionH, 'pdf canvas.height matches');
+
+    var canvas = createCanvas(canvasW + precisionW, canvasH + precisionH);
+    assert.equal((canvas.width - canvasW).toFixed(3), precisionW, 'svg canvas.width matches');
+    assert.equal((canvas.height - canvasH).toFixed(3), precisionH, 'svg canvas.height matches');
+  });
+
   it('Canvas#getContext("2d")', function () {
     var canvas = createCanvas(200, 300)
       , ctx = canvas.getContext('2d');
